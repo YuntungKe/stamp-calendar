@@ -9,14 +9,14 @@ st.set_page_config(page_title="SW Calendar", layout="wide")
 st.title("📅 蘇菲吳的專屬日曆")
 
 # --- 倒數計時器 ---
-target_date = datetime(2026, 7, 25).date()
+target_date = datetime(2026, 7, 23).date()
 today = datetime.now().date()
 days_left = (target_date - today).days
 
 # 顯示倒數計時 (使用 big font 樣式)
 st.markdown(f"""
     <div style="background-color: #d9ead3; padding: 20px; border-radius: 10px; border-left: 5px solid #6aa84f; margin-bottom: 25px;">
-        <span style="font-size: 1.2rem; color: #262730;">距離 2026/07/25 目標日還有</span>
+        <span style="font-size: 1.2rem; color: #262730;">距離 2026/07/23 目標日還有</span>
         <br>
         <span style="font-size: 3rem; font-weight: bold; color: #6aa84f;">{days_left}</span> 
         <span style="font-size: 1.5rem; color: #262730;">天</span>
@@ -150,7 +150,7 @@ for i, day_name in enumerate(["日", "一", "二", "三", "四", "五", "六"]):
 
 # --- 特殊日期設定 ---
 special_events = {
-    "2026-07-25": {"emoji": "🏁", "color": "rgba(241, 196, 15, 0.2)"},
+    "2026-07-23": {"emoji": "🏁", "color": "rgba(241, 196, 15, 0.2)"},
     "2026-07-10": {"emoji": "🎁", "color": "rgba(46, 204, 113, 0.2)"},
     "2026-07-03": {"emoji": "🎁", "color": "rgba(46, 204, 113, 0.2)"},
     "2026-06-19": {"emoji": "🐲", "color": "rgba(46, 204, 113, 0.2)"},
@@ -214,7 +214,7 @@ for week in cal:
 
 st.divider()
 st.success("☁️ 資料已同步至 Cloud")
-st.subheader("📖 歷史日記")
+st.subheader("📖 歷史日記 - 近7天")
 
 # 歷史紀錄 (從 Google Sheets 讀取表格)
 if not raw_df.empty:
@@ -223,7 +223,7 @@ if not raw_df.empty:
     
     # 確保日期格式正確以便排序
     history_df['Date'] = pd.to_datetime(history_df['Date']).dt.date
-    history_df = history_df.sort_values(by='Date', ascending=False)
+    history_df = history_df.sort_values(by='Date', ascending=False).head(7)
 
     # 2. 顯示表格
     st.dataframe(
